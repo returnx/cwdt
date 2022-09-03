@@ -1,0 +1,54 @@
+body {
+    padding: 25px;
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    background-image: url('kalandra-bg.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+label {
+    display: inline-block;
+    width: 350px;
+    margin: 5px;
+    font-weight:600;
+}
+
+input {
+    font-size: 20px;
+}
+
+text {
+    display: inline-block;
+    width: 350px;
+}
+
+.statusLabel {
+    font-weight:600;
+}
+
+.container {
+    display: flex;
+    background-color:rgba(0, 0, 0, 0.66);
+    width: 1500px;
+    position: absolute;
+    top: 33%;
+    left: 50%;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+
+.calcbox {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    padding: 10px;
+}
+
+h1 {
+    text-align: center;
+}
