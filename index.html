@@ -1,0 +1,164 @@
+<html>
+    <head>
+        <style>
+            body {
+                padding: 25px;
+                background-color: black;
+                color: white;
+                font-size: 20px;
+                font-family: 'Courier New', Courier, monospace;
+            }
+
+            label {
+                display: inline-block;
+                width: 300px;
+                margin: 5px;
+                font-weight:600;
+
+            }
+
+            input {
+                font-size: 20px;
+            }
+
+            text {
+                display: inline-block;
+                width: 300px;
+            }
+
+            .statusLabel {
+                font-weight:600;
+            }
+        </style>
+
+        <script>
+            const myTimeout = setInterval(checkLoop, 100);
+
+            function checkLoop() {
+                const life = document.getElementById("life").value;
+                const chaosRes = document.getElementById("chaos").value;
+
+                const ringCount1 =  document.getElementById("ringCount1").checked;
+                let ringMultiplier;
+                if(ringCount1==true) {
+                    ringMultiplier = 1;
+                } else {
+                    ringMultiplier = 2;
+                }
+
+                const isDivergent = document.getElementById("typeDivergent").checked
+                const gemQaulity = document.getElementById("CWDTQuality").value;
+                const gemLevel = document.getElementById("CWDTLevel").value;
+                const ringDamage = document.getElementById("ringDamage").value;
+                const SummonSkeletonLevel = document.getElementById("SummonSkeletonLevel").value;
+                let skeletonCount = 3;
+                if(SummonSkeletonLevel == 21)  {
+                    skeletonCount = 4;
+                }
+
+                let skeletonDamage = ringMultiplier * ringDamage * skeletonCount;
+                document.getElementById("skelDamage").innerHTML= skeletonDamage ;
+
+                let frDamage = life * 0.4 * (1-(chaosRes/100));
+                document.getElementById("frDamage").innerHTML= frDamage ;
+
+                let totalDamage = skeletonDamage + frDamage;
+                document.getElementById("totalDamage").innerHTML= totalDamage ;
+
+                let threshold;
+                let status;
+                switch(gemLevel) {
+                    case 21:
+                        threshold = 3580;
+                        break;
+                    case 22:
+                        threshold = 3950;
+                        break;
+                    case 23:
+                        threshold = 4350;
+                        break;
+                    default:
+                        threshold = 3580;
+                }
+
+
+                if(isDivergent) {
+                    threshold = threshold * (1-gemQaulity/100);
+                }
+
+                if(totalDamage >= threshold) {status = true}
+
+                if(status == true) {
+                    document.getElementById("status").innerHTML= "LOOPS";
+                    document.getElementById("status").style.color = "lime";
+                    document.getElementById("status").style.fontWeight = "900";
+
+                } else {
+                    document.getElementById("status").innerHTML= "LOOP FAILS";
+                    document.getElementById("status").style.color = "red";
+                    document.getElementById("status").style.fontWeight = "900";
+               }
+            }
+
+        </script>
+    </head>
+    <body>
+        <h1>CWDT Build Calculators</h1>
+
+        <h2>Loop Calculator</h2>
+        <div class="loop">
+            <label for="life">Life</label>
+            <input type="number" id="life" name="life" value="2510">
+            <br />
+            <label for="chaos">Chaos Resistance</label>
+            <input type="number" id="chaos" name="chaos" value="-60"> 
+            <br />
+            <label for="ringCount">Heartbound Loop rings</label>
+            <input type="radio" id="ringCount2" name="ringCount" value="Two" checked="checked">Two</input>
+            <input type="radio" id="ringCount1" name="ringCount" value="One">One</input>
+            <br />
+
+            <label for="ringDamage">Heartbound Ring Damage</label>
+            <input type="number" id="ringDamage" name="ringDamage" value="420"> 
+            <br />
+
+            <label for="SummonSkeletonLevel">Summon Skeleton Level</label>
+            <input type="number" id="SummonSkeletonLevel" name="SummonSkeletonLevel" value="11"> 
+            <br />
+
+            <label for="CWDT">CWDT Gem Quality Type</label>
+            <input type="radio" id="typeNormal" name="CWDT" value="One" checked="checked">Normal</input>
+            <input type="radio" id="typeDivergent" name="CWDT" value="Two">Divergent</input>
+            <br />
+
+            <label for="CWDTLevel">CWDT Gem Level</label>
+            <input type="number" id="CWDTLevel" name="CWDTLevel" value="21"> 
+            <br />
+
+            <label for="CWDTQuality">CWDT Gem Quality</label>
+            <input type="number" id="CWDTQuality" name="CWDTQuality" value="20"> 
+            <br />
+
+            <label for="Ward">Ward With Flask On</label>
+            <input type="number" id="Ward" name="Ward" value="1500">
+
+
+            <br />
+            <br /> 
+            <text>Skeleton Damage</text>
+            <text id ="skelDamage">computing..</text>
+            <br /> 
+            <text>Forbidden Rite Damage</text>
+            <text id ="frDamage">computing..</text>
+            <br /> 
+
+            <text>Total Damage</text>
+            <text id="totalDamage">computing..</text>
+            <br /> 
+            <br /> 
+
+            <text class="statusLabel">Loop Status</text>
+            <text id="status">computing..</text>
+        </div>
+    </body>
+</html>
