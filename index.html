@@ -66,8 +66,10 @@
                 document.getElementById("totalDamage").innerHTML= totalDamage ;
 
                 let threshold;
-                let status;
-                switch(gemLevel) {
+                let status =false;
+                let gLevel = parseInt(gemLevel);
+
+                switch(gLevel) {
                     case 21:
                         threshold = 3580;
                         break;
@@ -89,7 +91,7 @@
                 if(totalDamage >= threshold) {status = true}
 
                 if(status == true) {
-                    document.getElementById("status").innerHTML= "LOOPS";
+                    document.getElementById("status").innerHTML= "LOOP WORKS";
                     document.getElementById("status").style.color = "lime";
                     document.getElementById("status").style.fontWeight = "900";
 
