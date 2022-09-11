@@ -1,7 +1,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="style.css">
-        <script src="calc.js"></script> 
+        <script src="calc.js"></script>
     </head>
     <body>
         <h1>CWDT Build Calculators</h1>
@@ -12,51 +12,54 @@
                 <label for="life">Life</label>
                 <input type="number" id="life" name="life" value="2510">
                 <br />
+                <label for="energyShield">Energy Shield</label>
+                <input type="number" id="energyShield" name="energyShield" value="0">
+                <br />
                 <label for="chaos">Chaos Resistance</label>
-                <input type="number" id="chaos" name="chaos" value="-60"> 
+                <input type="number" id="chaos" name="chaos" value="-60">
                 <br />
                 <label for="ringCount">Heartbound Loop rings</label>
                 <input type="radio" id="ringCount2" name="ringCount" value="Two" checked="checked">Two</input>
                 <input type="radio" id="ringCount1" name="ringCount" value="One">One</input>
                 <br />
-    
+
                 <label for="ringDamage">Heartbound Ring Damage</label>
-                <input type="number" id="ringDamage" name="ringDamage" value="420"> 
+                <input type="number" id="ringDamage" name="ringDamage" value="420">
                 <br />
-    
+
                 <label for="SummonSkeletonLevel">Summon Skeleton Level</label>
-                <input type="number" id="SummonSkeletonLevel" name="SummonSkeletonLevel" value="11"> 
+                <input type="number" id="SummonSkeletonLevel" name="SummonSkeletonLevel" value="11">
                 <br />
-    
+
                 <label for="CWDT">CWDT Gem Quality Type</label>
                 <input type="radio" id="typeNormal" name="CWDT" value="One" checked="checked">Normal</input>
                 <input type="radio" id="typeDivergent" name="CWDT" value="Two">Divergent</input>
                 <br />
-    
+
                 <label for="CWDTLevel">CWDT Gem Level</label>
-                <input type="number" id="CWDTLevel" name="CWDTLevel" value="21"> 
+                <input type="number" id="CWDTLevel" name="CWDTLevel" value="21">
                 <br />
-    
+
                 <label for="CWDTQuality">CWDT Gem Quality</label>
-                <input type="number" id="CWDTQuality" name="CWDTQuality" value="20"> 
+                <input type="number" id="CWDTQuality" name="CWDTQuality" value="20">
                 <br />
-    
+
                 <label for="Ward">Ward With Flask On</label>
                 <input type="number" id="Ward" name="Ward" value="1500">
-    
+
                 <br />
-                <br /> 
+                <br />
                 <text>Skeleton Damage</text>
                 <text id ="skelDamage">computing..</text>
-                <br /> 
+                <br />
                 <text>Forbidden Rite Damage</text>
                 <text id ="frDamage">computing..</text>
-                <br /> 
-    
+                <br />
+
                 <text>Total Damage</text>
                 <text id="totalDamage">computing..</text>
-                <br /> 
-                <br /> 
+                <br />
+                <br />
                 <text class="statusLabel">Loop Status</text>
                 <text id="status">computing..</text>
             </div>
@@ -66,32 +69,32 @@
                 <input type="radio" id="scion" name="ascendancy" value="scion" checked="checked">Scion</input>
                 <input type="radio" id="pathfinder" name="ascendancy" value="pathfinder">Pathfinder</input>
                 <input type="radio" id="others" name="ascendancy" value="others">Others</input>
-                <br /> 
+                <br />
 
                 <label for="flasks">Flasks</label>
                 <input type="radio" id="2flask" name="flasks" value="2">2</input>
                 <input type="radio" id="3flask" name="flasks" value="3" checked="checked">3</input>
                 <input type="radio" id="4flask" name="flasks" value="4">4</input>
-                <br /> 
+                <br />
 
                 <label for="charges">Flask Charges Gained</label>
-                <input type="number" id="charges" name="charges" value="75"> 
+                <input type="number" id="charges" name="charges" value="75">
                 <br />
 
                 <label for="duration">Flask Duration</label>
-                <input type="number" id="duration" name="duration" value="56"> 
+                <input type="number" id="duration" name="duration" value="56">
                 <br />
 
                 <label for="reduced">Reduced Flask Charges Used</label>
-                <input type="number" id="reduced" name="reduced" value="19"> 
+                <input type="number" id="reduced" name="reduced" value="19">
                 <br />
 
                 <label for="olduration">Olroth's Flask Duration</label>
-                <input type="number" id="olduration" name="olduration" value="6.0" step="0.1"> 
+                <input type="number" id="olduration" name="olduration" value="6.0" step="0.1">
                 <br />
 
                 <label for="olused">Olroth's Charges Used</label>
-                <input type="number" id="olused" name="olused" value="58"> 
+                <input type="number" id="olused" name="olused" value="58">
                 <br /><br /><br /><br /><br /><br /><br /><br /><br />
 
                 <text class="statusLabel">Flask Status</text>

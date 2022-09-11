@@ -2,6 +2,7 @@ const myTimeout = setInterval(checkLoop, 100);
 
 function checkLoop() {
     const life = document.getElementById("life").value;
+    const energyShield = document.getElementById("energyShield").value;
     const chaosRes = document.getElementById("chaos").value;
 
     const ringCount1 =  document.getElementById("ringCount1").checked;
@@ -25,7 +26,7 @@ function checkLoop() {
     let skeletonDamage = ringMultiplier * ringDamage * skeletonCount;
     document.getElementById("skelDamage").innerHTML= skeletonDamage ;
 
-    let frDamage = life * 0.4 * (1-(chaosRes/100));
+    let frDamage = (life * 0.4 + energyShield * 0.25) * (1-(chaosRes/100));
     document.getElementById("frDamage").innerHTML= frDamage ;
 
     let totalDamage = skeletonDamage + frDamage;
