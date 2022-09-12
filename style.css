@@ -6,7 +6,7 @@ body {
     font-family: 'Courier New', Courier, monospace;
     background-image: url('kalandra-bg.jpg');
     background-repeat: no-repeat;
-    background-position: center;
+    background-position:  top;
 }
 
 label {
@@ -20,7 +20,7 @@ input {
     font-size: 20px;
 }
 
-text {
+div.calcbox text {
     display: inline-block;
     width: 350px;
 }
@@ -32,9 +32,9 @@ text {
 .container {
     display: flex;
     background-color:rgba(0, 0, 0, 0.66);
-    width: 1500px;
+    width: 1600px;
     position: absolute;
-    top: 33%;
+    top: 400px;
     left: 50%;
     -ms-transform: translateX(-50%) translateY(-50%);
     -webkit-transform: translate(-50%,-50%);
@@ -51,4 +51,11 @@ text {
 
 h1 {
     text-align: center;
+}
+
+.info {
+    position: absolute;
+    top: 700px;
+    left: 300px;
+    color: red;
 }

@@ -114,4 +114,6 @@ function checkLoop() {
             document.getElementById("fstatus").style.color = "red";
             document.getElementById("fstatus").style.fontWeight = "900";
    }
+
+   document.getElementById("fCoefficient").innerHTML= result;
 }
