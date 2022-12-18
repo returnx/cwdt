@@ -4,7 +4,7 @@ body {
     color: white;
     font-size: 20px;
     font-family: 'Courier New', Courier, monospace;
-    background-image: url('kalandra-bg.jpg');
+    background-image: url('sanctum-bg.jpg');
     background-repeat: no-repeat;
     background-position:  top;
 }
@@ -22,7 +22,7 @@ input {
 
 div.calcbox text {
     display: inline-block;
-    width: 350px;
+    width: 300px;
 }
 
 .statusLabel {
@@ -32,7 +32,7 @@ div.calcbox text {
 .container {
     display: flex;
     background-color:rgba(0, 0, 0, 0.66);
-    width: 1600px;
+    width: 1300px;
     position: absolute;
     top: 400px;
     left: 50%;
@@ -55,7 +55,9 @@ h1 {
 
 .info {
     position: absolute;
+    margin-top: 20px;
     top: 700px;
-    left: 300px;
+    left: 450px;
     color: red;
+    width: 1300px;
 }

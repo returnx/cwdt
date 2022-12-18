@@ -10,13 +10,13 @@
             <div class="calcbox">
                 <h2>Loop Calculator</h2>
                 <label for="life">Life</label>
-                <input type="number" id="life" name="life" value="2510">
+                <input type="number" id="life" name="life" value="2500">
                 <br />
                 <label for="energyShield">Energy Shield</label>
                 <input type="number" id="energyShield" name="energyShield" value="0">
                 <br />
                 <label for="chaos">Chaos Resistance</label>
-                <input type="number" id="chaos" name="chaos" value="-60">
+                <input type="number" id="chaos" name="chaos" value="-10">
                 <br />
                 <label for="ringCount">Heartbound Loop rings</label>
                 <input type="radio" id="ringCount2" name="ringCount" value="Two" checked="checked">Two</input>
@@ -45,7 +45,7 @@
                 <br />
 
                 <label for="Ward">Ward With Flask On</label>
-                <input type="number" id="Ward" name="Ward" value="1500">
+                <input type="number" id="Ward" name="Ward" value="1100">
 
                 <br />
                 <br />
@@ -62,12 +62,18 @@
                 <br />
                 <text class="statusLabel">Loop Status</text>
                 <text id="status">computing..</text>
+
+                <br />
+                <br />
+                <text class="wardfrlabel">Ward > FR damage</text>
+                <text id="wardfr">computing..</text>
+                <br />
+                <br />
             </div>
             <div class="calcbox">
                 <h2>Flask Calculator</h2>
                 <label for="ascendancy">Ascendancy</label>
-                <input type="radio" id="scion" name="ascendancy" value="scion" checked="checked">Scion</input>
-                <input type="radio" id="pathfinder" name="ascendancy" value="pathfinder">Pathfinder</input>
+                <input type="radio" id="scion" name="ascendancy" value="scion" checked="checked">Scion/PF</input>
                 <input type="radio" id="others" name="ascendancy" value="others">Others</input>
                 <br />
 
@@ -107,10 +113,25 @@
         </div>
 
         <div class="info">
-            <text>
-            If your Ward is less than Forbidden rite damage, then don't use Mind Over Matter, it may cause loop issue.
+            <b>Ward Life Chaos Resistance</b>
             <br/>
-            Try to get flask coefficent above 1.05
+            <br/>
+
+            <text>
+            If your Forbidden Rite damage is greater than your Ward, then don't use Mind Over Matter and you cannot run less recovery map mods. It does not break the build, but you have to be careful.
+            <br/>
+            <br/>
+            If you have more life, you need to adjust chaos resistance to avoid FR damage to life pool.
+            This applies only if you are using Forbidden rite trigger setup
+            <br/>
+            <br/>
+
+            <b>About Flasks</b>
+            <br/>
+            <br/>
+            Try to get flask coefficent above 1.05. Anything above 1.0 should theoritically work!
+            <br>
+            You can find your flasks stats in your character sheet. Press C and go to Misc Tab.
             </text>
         </div>
 

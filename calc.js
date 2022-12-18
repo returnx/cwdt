@@ -6,6 +6,7 @@ function checkLoop() {
     const chaosRes = document.getElementById("chaos").value;
 
     const ringCount1 =  document.getElementById("ringCount1").checked;
+
     let ringMultiplier;
     if(ringCount1==true) {
         ringMultiplier = 1;
@@ -19,6 +20,7 @@ function checkLoop() {
     const ringDamage = document.getElementById("ringDamage").value;
     const SummonSkeletonLevel = document.getElementById("SummonSkeletonLevel").value;
     let skeletonCount = 3;
+
     if(SummonSkeletonLevel == 21)  {
         skeletonCount = 4;
     }
@@ -67,6 +69,18 @@ function checkLoop() {
         document.getElementById("status").style.fontWeight = "900";
    }
 
+   const ward = document.getElementById("Ward").value;
+
+   if(ward >= frDamage) {
+        document.getElementById("wardfr").innerHTML= "YES";
+        document.getElementById("wardfr").style.color = "lime";
+        document.getElementById("wardfr").style.fontWeight = "900";
+   } else {
+        document.getElementById("wardfr").innerHTML= "No";
+        document.getElementById("wardfr").style.color = "red";
+        document.getElementById("wardfr").style.fontWeight = "900";
+   }
+   
    // Flask math
 
    const asc =  document.getElementById("others").checked;
