@@ -129,7 +129,7 @@ function checkLoop() {
         ascCharges = 1;
    }
 
-   var result = (((4*flaskMultiplier/5)+(1/3)+ascCharges)*(1+(chargesGained/100))+0.075) / (olused*(1-reduced/100)/(olduration*(1+(duration/100))));
+   var result = (((4*flaskMultiplier/5)+ascCharges)*(1+(chargesGained/100))+0.075) / (olused*(1-reduced/100)/(olduration*(1+(duration/100))));
    if(result > 1.02 ) {
         document.getElementById("fstatus").innerHTML= "FLASKS WORK!";
         document.getElementById("fstatus").style.color = "lime";
