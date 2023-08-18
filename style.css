@@ -14,6 +14,7 @@ label {
     width: 350px;
     margin: 5px;
     font-weight:600;
+    padding-bottom: 10px;
 }
 
 input {
@@ -30,10 +31,10 @@ div.calcbox text {
 }
 
 .container {
-    display: flex;
+    display: block ruby;
     background-color:rgba(0, 0, 0, 0.66);
-    width: 1300px;
-    position: absolute;
+    width: 77%;
+    position: relative;
     top: 400px;
     left: 50%;
     -ms-transform: translateX(-50%) translateY(-50%);
@@ -42,7 +43,7 @@ div.calcbox text {
 }
 
 .calcbox {
-    display: block;
+    display: table;
     margin-left: auto;
     margin-right: auto;
     width: 50%;
@@ -54,10 +55,21 @@ h1 {
 }
 
 .info {
-    position: absolute;
-    margin-top: 20px;
-    top: 700px;
-    left: 450px;
+    margin: 1% 0 0 12%;
     color: #bcffc0;
     width: 1300px;
+}
+
+@media (max-width: 1750px) {
+    .container {
+        display: contents;
+    }
+
+    .calcbox {
+        width: auto;
+    }
+
+    .info {
+        margin: 2% 0 0 0;
+    }
 }
