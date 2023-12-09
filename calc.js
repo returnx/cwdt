@@ -14,7 +14,7 @@ function checkLoop() {
         ringMultiplier = 2;
     }
 
-    const isDivergent = document.getElementById("typeDivergent").checked
+    // const isDivergent = document.getElementById("typeDivergent").checked
     const gemQuality = document.getElementById("CWDTQuality").value;
     const gemLevel = document.getElementById("CWDTLevel").value;
     const ringDamage = document.getElementById("ringDamage").value;
@@ -36,6 +36,10 @@ function checkLoop() {
     let threshold;
     let status =false;
     let gLevel = parseInt(gemLevel);
+
+    if(parseInt(SummonSkeletonLevel) > gLevel) {
+        gLevel = parseInt(SummonSkeletonLevel);
+    }
 
     switch(gLevel) {
         case 1: threshold = 528; break;
@@ -64,9 +68,9 @@ function checkLoop() {
         default: threshold = 3580; // level 21
     }
 
-    if(isDivergent) {
-        threshold = threshold * (1 - gemQuality/100);
-    }
+    let gemMulti = Math.floor(gemQuality/2);
+    threshold = threshold * (1 - gemMulti/100);
+    
 
     if(totalDamage >= threshold) {status = true}
 
@@ -88,8 +92,8 @@ function checkLoop() {
         document.getElementById("wardfr").style.color = "lime";
         document.getElementById("wardfr").style.fontWeight = "900";
    } else {
-        document.getElementById("wardfr").innerHTML= "No";
-        document.getElementById("wardfr").style.color = "red";
+        document.getElementById("wardfr").innerHTML= "NO";
+        document.getElementById("wardfr").style.color = "yellow";
         document.getElementById("wardfr").style.fontWeight = "900";
    }
    
@@ -101,6 +105,7 @@ function checkLoop() {
    var reduced = document.getElementById("reduced").value;
    var olduration = document.getElementById("olduration").value;
    var olused = document.getElementById("olused").value;
+   var charms = document.getElementById("charms").value
 
    chargesGained = parseInt(chargesGained);
    duration = parseInt(duration);
@@ -129,7 +134,7 @@ function checkLoop() {
         ascCharges = 1;
    }
 
-   var result = (((4*flaskMultiplier/5)+ascCharges)*(1+(chargesGained/100))+0.075) / (olused*(1-reduced/100)/(olduration*(1+(duration/100))));
+   var result = (((4*flaskMultiplier/5) + ascCharges + charms/3)*(1+(chargesGained/100))+0.075) / (olused*(1-reduced/100)/(olduration*(1+(duration/100))));
    if(result > 1.02 ) {
         document.getElementById("fstatus").innerHTML= "FLASKS WORK!";
         document.getElementById("fstatus").style.color = "lime";
