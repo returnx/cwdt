@@ -37,9 +37,10 @@ function checkLoop() {
     let status =false;
     let gLevel = parseInt(gemLevel);
 
-    if(parseInt(SummonSkeletonLevel) > gLevel) {
-        gLevel = parseInt(SummonSkeletonLevel);
-    }
+    // if(parseInt(SummonSkeletonLevel) > gLevel) {
+    //     gLevel = parseInt(SummonSkeletonLevel);
+    // }
+    // We will handle this case later, perhaps only the bot will support it
 
     switch(gLevel) {
         case 1: threshold = 528; break;
