@@ -47,6 +47,7 @@ function checkEverything() {
 // Calculates whether the loop works
 function checkLoop() {
      const {
+          forbiddenRite,
           life,
           energyShield,
           chaosRes,
@@ -66,7 +67,7 @@ function checkLoop() {
      let skeletonDamage = ringCount * ringDamage * skeletonCount;
      document.getElementById("skelDamage").innerHTML = skeletonDamage;
 
-     let frDamage = (life * 0.4 + energyShield * 0.25) * (1 - (chaosRes / 100));
+     let frDamage = forbiddenRite * (life * 0.4 + energyShield * 0.25) * (1 - (chaosRes / 100));
      document.getElementById("frDamage").innerHTML = frDamage;
 
      let totalDamage = skeletonDamage + frDamage;
