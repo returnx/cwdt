@@ -1,140 +1,146 @@
 <html>
-    <head>
-        <link rel="stylesheet" href="style.css">
-        <script src="calc.js"></script>
-        <link rel="icon" type="image/x-icon" href="favicon.ico">
-        <title>CWDT Build Calculators</title>
-    </head>
-    <body>
-        <h1>3.23 CWDT Build Calculators</h1>
 
-        <div class="container">
-            <div class="calcbox">
-                <h2>Loop Calculator</h2>
-                <label for="life">Life</label>
-                <input type="number" id="life" name="life" value="2500">
-                <br />
-                <label for="energyShield">Energy Shield</label>
-                <input type="number" id="energyShield" name="energyShield" value="0">
-                <br />
-                <label for="chaos">Chaos Resistance</label>
-                <input type="number" id="chaos" name="chaos" value="-10">
-                <br />
-                <label for="ringCount">Heartbound Loop rings</label>
-                <input type="radio" id="ringCount2" name="ringCount" value="Two" checked="checked">Two</input>
-                <input type="radio" id="ringCount1" name="ringCount" value="One">One</input>
-                <br />
+<head>
+    <link rel="stylesheet" href="style.css">
+    <script src="calc.js"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>CWDT Build Calculators</title>
+</head>
 
-                <label for="ringDamage">Heartbound Ring Damage</label>
-                <input type="number" id="ringDamage" name="ringDamage" value="420">
-                <br />
+<body>
+    <h1>3.23 CWDT Build Calculators</h1>
 
-                <label for="SummonSkeletonLevel">Summon Skeleton Level(After +1/+2)</label>
-                <input type="number" id="SummonSkeletonLevel" name="SummonSkeletonLevel" value="11">
-                <br />
+    <div class="container">
+        <div class="calcbox">
+            <h2>Loop Calculator</h2>
+            <label for="life">Life</label>
+            <input type="number" id="life" name="life" value="2500">
+            <br />
+            <label for="energyShield">Energy Shield</label>
+            <input type="number" id="energyShield" name="energyShield" value="0">
+            <br />
+            <label for="chaos">Chaos Resistance</label>
+            <input type="number" id="chaos" name="chaos" value="-10">
+            <br />
+            <label for="ringCount">Heartbound Loop rings</label>
+            <input type="radio" id="ringCount2" name="ringCount" value="Two" checked="checked">Two</input>
+            <input type="radio" id="ringCount1" name="ringCount" value="One">One</input>
+            <br />
 
-                <label for="CWDTLevel">Body CWDT Level(After +1/+2)</label>
-                <input type="number" id="CWDTLevel" name="CWDTLevel" value="21">
-                <br />
+            <label for="ringDamage">Heartbound Ring Damage</label>
+            <input type="number" id="ringDamage" name="ringDamage" value="420">
+            <br />
 
-                <label for="CWDTQuality">Body CWDT Quality</label>
-                <input type="number" id="CWDTQuality" name="CWDTQuality" value="20">
-                <br />
+            <label for="SummonSkeletonLevel">Summon Skeleton Level(After +1/+2)</label>
+            <input type="number" id="SummonSkeletonLevel" name="SummonSkeletonLevel" value="11">
+            <br />
 
-                <label for="Ward">Ward With Flask On</label>
-                <input type="number" id="Ward" name="Ward" value="1100">
+            <label for="CWDTLevel">Body CWDT Level(After +1/+2)</label>
+            <input type="number" id="CWDTLevel" name="CWDTLevel" value="21">
+            <br />
 
-                <br />
-                <br />
-                <text>Skeleton Damage</text>
-                <text id ="skelDamage">computing..</text>
-                <br />
-                <text>Forbidden Rite Damage</text>
-                <text id ="frDamage">computing..</text>
-                <br />
+            <label for="CWDTQuality">Body CWDT Quality</label>
+            <input type="number" id="CWDTQuality" name="CWDTQuality" value="20">
+            <br />
 
-                <text>Total Damage</text>
-                <text id="totalDamage">computing..</text>
-                <br />
-                <br />
-                <text class="statusLabel">Loop Status</text>
-                <text id="status">computing..</text>
+            <label for="Ward">Ward With Flask On</label>
+            <input type="number" id="Ward" name="Ward" value="1100">
 
-                <br />
-                <br />
-                <text class="wardfrlabel">Ward > FR damage</text>
-                <text id="wardfr">computing..</text>
-                <br />
-                <br />
-            </div>
-            <div class="calcbox">
-                <h2>Flask Calculator</h2>
-                <label for="ascendancy">Ascendancy</label>
-                <input type="radio" id="scion" name="ascendancy" value="scion" checked="checked">Scion/PF</input>
-                <input type="radio" id="others" name="ascendancy" value="others">Others</input>
-                <br />
+            <br />
+            <br />
+            <text>Skeleton Damage</text>
+            <text id="skelDamage">computing..</text>
+            <br />
+            <text>Forbidden Rite Damage</text>
+            <text id="frDamage">computing..</text>
+            <br />
 
-                <label for="flasks">Flasks</label>
-                <input type="radio" id="2flask" name="flasks" value="2">2</input>
-                <input type="radio" id="3flask" name="flasks" value="3" checked="checked">3</input>
-                <input type="radio" id="4flask" name="flasks" value="4">4</input>
-                <br />
+            <text>Total Damage</text>
+            <text id="totalDamage">computing..</text>
+            <br />
+            <br />
+            <text class="statusLabel">Loop Status</text>
+            <text id="status">computing..</text>
 
-                <label for="Pathfinder Charms">Pathfinder Charms</label>
-                <input type="number" id="charms" name="charms" value="0">
-                <br />
-
-                <label for="charges">Flask Charges Gained</label>
-                <input type="number" id="charges" name="charges" value="75">
-                <br />
-
-                <label for="duration">Flask Duration</label>
-                <input type="number" id="duration" name="duration" value="56">
-                <br />
-
-                <label for="reduced">Reduced Flask Charges Used</label>
-                <input type="number" id="reduced" name="reduced" value="19">
-                <br />
-
-                <label for="olduration">Olroth's Flask Duration</label>
-                <input type="number" id="olduration" name="olduration" value="6.0" step="0.1">
-                <br />
-
-                <label for="olused">Olroth's Charges Consumed</label>
-                <input type="number" id="olused" name="olused" value="58">
-                <br /><br /><br /><br /><br /><br /><br /><br /><br />
-
-                <text class="statusLabel">Flask Status</text>
-                <text id="fstatus">computing..</text>
-                <br />
-
-                <text class="flaskCoeff">Flask Coefficient</text>
-                <text id="fCoefficient">computing..</text>
-            </div>
+            <br />
+            <br />
+            <text class="wardfrlabel">Ward > FR damage</text>
+            <text id="wardfr">computing..</text>
+            <br />
+            <br />
         </div>
+        <div class="calcbox">
+            <h2>Flask Calculator</h2>
+            <label for="ascendancy">Ascendancy</label>
+            <input type="radio" id="scion" name="ascendancy" value="scion" checked="checked">Scion/PF</input>
+            <input type="radio" id="others" name="ascendancy" value="others">Others</input>
+            <br />
 
-        <div class="info">
-            <b>Ward Life Chaos Resistance</b>
-            <br/>
-            <br/>
+            <label for="flasks">Flasks</label>
+            <input type="radio" id="2flask" name="flasks" value="2">2</input>
+            <input type="radio" id="3flask" name="flasks" value="3" checked="checked">3</input>
+            <input type="radio" id="4flask" name="flasks" value="4">4</input>
+            <br />
 
-            <text>
-            If your Forbidden Rite damage is greater than your Ward, then don't use Mind Over Matter, because Forbidden Rite damage will remove your mana and also you cannot run less recovery map mods. It does not break the build, but you have to be careful.
-            <br/>
-            <br/>
+            <label for="Pathfinder Charms">Pathfinder Charms</label>
+            <input type="number" id="charms" name="charms" value="0">
+            <br />
+
+            <label for="charges">Flask Charges Gained</label>
+            <input type="number" id="charges" name="charges" value="75">
+            <br />
+
+            <label for="duration">Flask Duration</label>
+            <input type="number" id="duration" name="duration" value="56">
+            <br />
+
+            <label for="reduced">Reduced Flask Charges Used</label>
+            <input type="number" id="reduced" name="reduced" value="19">
+            <br />
+
+            <label for="olduration">Olroth's Flask Duration</label>
+            <input type="number" id="olduration" name="olduration" value="6.0" step="0.1">
+            <br />
+
+            <label for="olused">Olroth's Charges Consumed</label>
+            <input type="number" id="olused" name="olused" value="58">
+            <br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+            <text class="statusLabel">Flask Status</text>
+            <text id="fstatus">computing..</text>
+            <br />
+
+            <text class="flaskCoeff">Flask Coefficient</text>
+            <text id="fCoefficient">computing..</text>
+        </div>
+    </div>
+
+    <div class="info">
+        <b>Ward Life Chaos Resistance</b>
+        <br />
+        <br />
+
+        <text>
+            If your Forbidden Rite damage is greater than your Ward, then don't use Mind Over Matter, because Forbidden
+            Rite damage will remove your mana and also you cannot run less recovery map mods. It does not break the
+            build, but you have to be careful.
+            <br />
+            <br />
             If you have more life, you need to adjust chaos resistance to avoid FR damage to life pool.
             This applies only if you are using Forbidden rite trigger setup
-            <br/>
-            <br/>
+            <br />
+            <br />
 
             <b>About Flasks</b>
-            <br/>
-            <br/>
-            Try to get flask coefficent above 1.03. Anything above 1.0 should theoritically work, but does not sometimes!
+            <br />
+            <br />
+            Try to get flask coefficent above 1.03. Anything above 1.0 should theoritically work, but does not
+            sometimes!
             <br>
             You can find your flasks stats in your character sheet. Press C and go to Misc Tab.
-            </text>
-        </div>
+        </text>
+    </div>
 
-    </body>
+</body>
+
 </html>
