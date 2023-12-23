@@ -1,4 +1,18 @@
-const myTimeout = setInterval(checkLoop, 100);
+// This function shall run once after both the HTML and JavaScript finished loading
+// It doesn't need to wait for images etc (as body.onLoad would do)
+function init() {
+     // All input elements shall trigger recalculation when changed
+     for (let e of document.getElementsByTagName("input")) {
+          e.addEventListener("change", checkLoop);
+          e.addEventListener("input", checkLoop);
+     }
+     checkLoop();
+}
+if (document.readyState === "loading") {
+     document.addEventListener("DOMContentLoaded", init);
+} else {
+     init();
+}
 
 function checkLoop() {
      const life = document.getElementById("life").value;
