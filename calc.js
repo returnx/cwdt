@@ -1,3 +1,13 @@
+const CWDT_THRESHOLDS = [
+     0,
+     // lvl 1 to 10
+     528, 583, 661, 725, 812, 897, 1003, 1107, 1221, 1354,
+     // lvl 11 to 20
+     1485, 1635, 1804, 1980, 2184, 2394, 2621, 2874, 3142, 3272,
+     // lvl 21+
+     3580, 3950, 4350, 4780, 5240, 5730, 6250, 6800, 7380, 7990
+];
+
 // This function shall run once after both the HTML and JavaScript finished loading
 // It doesn't need to wait for images etc (as body.onLoad would do)
 function init() {
@@ -62,45 +72,17 @@ function checkLoop() {
      let totalDamage = skeletonDamage + frDamage;
      document.getElementById("totalDamage").innerHTML = totalDamage;
 
-     let threshold;
-     let status = false;
-     let gLevel = parseInt(CWDTLevel);
+     let threshold = CWDT_THRESHOLDS[CWDTLevel];
+     let gemMulti = Math.floor(CWDTQuality / 2);
+     threshold = threshold * (1 - gemMulti / 100);
 
      // if(parseInt(SummonSkeletonLevel) > gLevel) {
      //     gLevel = parseInt(SummonSkeletonLevel);
      // }
      // We will handle this case later, perhaps only the bot will support it
 
-     switch (gLevel) {
-          case 1: threshold = 528; break;
-          case 2: threshold = 583; break;
-          case 3: threshold = 661; break;
-          case 4: threshold = 725; break;
-          case 5: threshold = 812; break;
-          case 6: threshold = 897; break;
-          case 7: threshold = 1003; break;
-          case 8: threshold = 1107; break;
-          case 9: threshold = 1221; break;
-          case 10: threshold = 1354; break;
-          case 11: threshold = 1485; break;
-          case 12: threshold = 1635; break;
-          case 13: threshold = 1804; break;
-          case 14: threshold = 1980; break;
-          case 15: threshold = 2184; break;
-          case 16: threshold = 2394; break;
-          case 17: threshold = 2621; break;
-          case 18: threshold = 2874; break;
-          case 19: threshold = 3142; break;
-          case 20: threshold = 3272; break;
-          case 21: threshold = 3580; break;
-          case 22: threshold = 3950; break;
-          case 23: threshold = 4350; break;
-          default: threshold = 3580; // level 21
-     }
 
-     let gemMulti = Math.floor(CWDTQuality / 2);
-     threshold = threshold * (1 - gemMulti / 100);
-
+     let status = false;
 
      if (totalDamage >= threshold) { status = true }
 
