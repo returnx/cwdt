@@ -39,6 +39,20 @@ function readFormElements(formid) {
      return values;
 }
 
+function output(elementname, contents, color) {
+     const e = document.getElementById(elementname);
+     if (!e) return;
+     if (typeof contents === 'number') {
+          // If this is a number, round down to two decimal places
+          contents = Math.floor(contents * 100) / 100;
+     }
+     e.innerText = contents;
+     if (color) {
+          e.style.color = color;
+          e.style.fontWeight = "900";
+     }
+}
+
 function checkEverything() {
      checkLoop();
      checkFlask();
@@ -65,13 +79,13 @@ function checkLoop() {
      if (SummonSkeletonLevel >= 31) skeletonCount++;
 
      let skeletonDamage = ringCount * ringDamage * skeletonCount;
-     document.getElementById("skelDamage").innerHTML = skeletonDamage;
+     output("skelDamage", skeletonDamage);
 
      let frDamage = forbiddenRite * (life * 0.4 + energyShield * 0.25) * (1 - (chaosRes / 100));
-     document.getElementById("frDamage").innerHTML = frDamage;
+     output("frDamage", frDamage);
 
      let totalDamage = skeletonDamage + frDamage;
-     document.getElementById("totalDamage").innerHTML = totalDamage;
+     output("totalDamage", totalDamage);
 
      let threshold = CWDT_THRESHOLDS[CWDTLevel];
      let gemMulti = Math.floor(CWDTQuality / 2);
@@ -82,30 +96,16 @@ function checkLoop() {
      // }
      // We will handle this case later, perhaps only the bot will support it
 
-
-     let status = false;
-
-     if (totalDamage >= threshold) { status = true }
-
-     if (status == true) {
-          document.getElementById("status").innerHTML = "LOOP WORKS";
-          document.getElementById("status").style.color = "lime";
-          document.getElementById("status").style.fontWeight = "900";
-
+     if (totalDamage >= threshold) {
+          output("status", "LOOP WORKS", "lime");
      } else {
-          document.getElementById("status").innerHTML = "LOOP FAILS";
-          document.getElementById("status").style.color = "red";
-          document.getElementById("status").style.fontWeight = "900";
+          output("status", "LOOP FAILS", "red");
      }
 
      if (ward >= frDamage) {
-          document.getElementById("wardfr").innerHTML = "YES";
-          document.getElementById("wardfr").style.color = "lime";
-          document.getElementById("wardfr").style.fontWeight = "900";
+          output("wardfr", "YES", "lime");
      } else {
-          document.getElementById("wardfr").innerHTML = "NO";
-          document.getElementById("wardfr").style.color = "yellow";
-          document.getElementById("wardfr").style.fontWeight = "900";
+          output("wardfr", "NO", "yellow");
      }
 }
 
@@ -128,15 +128,9 @@ function checkFlask() {
 
      var result = (((4 * flaskMultiplier / 5) + ascCharges + charms / 3) * (1 + (charges / 100)) + 0.075) / (olused * (1 - reduced / 100) / (olduration * (1 + (duration / 100))));
      if (result > 1.02) {
-          document.getElementById("fstatus").innerHTML = "FLASKS WORK!";
-          document.getElementById("fstatus").style.color = "lime";
-          document.getElementById("fstatus").style.fontWeight = "900";
-
+          output("fstatus", "FLASKS WORK!", "lime");
      } else {
-          document.getElementById("fstatus").innerHTML = "FLASKS FAIL";
-          document.getElementById("fstatus").style.color = "red";
-          document.getElementById("fstatus").style.fontWeight = "900";
+          output("fstatus", "FLASKS FAIL", "red");
      }
-
-     document.getElementById("fCoefficient").innerHTML = result;
+     output("fCoefficient", result);
 }
