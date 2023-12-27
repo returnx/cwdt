@@ -112,25 +112,48 @@ function checkLoop() {
 // Calculates flask uptime
 function checkFlask() {
      const {
-          ascCharges,
-          flaskCount,
-          charms,
-          charges,
-          duration,
-          reduced,
-          olduration,
-          olused,
+          ascCharges,    // checking if scion/pathfinder
+          flaskCount,    // 2-3-4
+          charms,        // charm count
+          charges,       // total charges gained
+          duration,      // total flask duration
+          reduced,       // reduced flask charges used modifier
+          olduration,    // olroth's duration
+          olused,        // olroths's charges used 
      } = readFormElements("flaskForm");
 
-     var flaskMultiplier = 5 - flaskCount;
+     var flaskMultiplier = 5 - flaskCount; // balbala multiplier, this calculator assumes balbala
+     var chargesConsumed = olused * (1 - (reduced/100));
+
+     var currentCharges = 60 - chargesConsumed; // Olroth's flask has 60 charges, so we start
+
+     var totalDuration = parseInt((olduration * (1 + (duration / 100))) * 1000);
+
+     output("fstatus", "FLASKS WORK!", "lime"); // We assume flask work
+     // We check if flask will sustain for 10 minutes. The time here is in milliseconds
+
+     for(var i = 1; i < 10 * 60 * 1000; i++) {
+
+          if(i % 3000 === 0) {
+               currentCharges = currentCharges + ((ascCharges * 3 + charms) * (1 + (charges/100)));
+          }
+
+          if(i % 5000 === 0) {
+               currentCharges = currentCharges + ((4 * flaskMultiplier) * (1 + (charges/100)));
+          }
+
+          if(i % totalDuration === 0) {
+               if(currentCharges >= chargesConsumed) {
+                    currentCharges = currentCharges - chargesConsumed;
+               } else {
+                    output("fstatus", "FLASKS FAIL", "red");
+                    break;
+               }
+          }
+
+     }
 
      // (((8/5)+(1/3)+(3/3))*(1+(R1/100))+0.075) / (R5*(1-R3/100)/(R4*(1+(R2/100))))
-
-     var result = (((4 * flaskMultiplier / 5) + ascCharges + charms / 3) * (1 + (charges / 100)) + 0.075) / (olused * (1 - reduced / 100) / (olduration * (1 + (duration / 100))));
-     if (result > 1.02) {
-          output("fstatus", "FLASKS WORK!", "lime");
-     } else {
-          output("fstatus", "FLASKS FAIL", "red");
-     }
-     output("fCoefficient", result);
+     var fCoefficient = (((4 * flaskMultiplier / 5) + ascCharges + charms / 3) * (1 + (charges / 100)) + 0.075) / (olused * (1 - reduced / 100) / (olduration * (1 + (duration / 100))));
+     output("fCoefficient", fCoefficient);
 }
