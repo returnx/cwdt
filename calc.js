@@ -51,6 +51,10 @@ function output(elementname, contents, color) {
           e.style.color = color;
           e.style.fontWeight = "900";
      }
+     else {
+          e.style.color = "";
+          e.style.fontWeight = "";
+     }
 }
 
 function checkEverything() {
@@ -78,34 +82,52 @@ function checkLoop() {
      if (SummonSkeletonLevel >= 21) skeletonCount++;
      if (SummonSkeletonLevel >= 31) skeletonCount++;
 
-     let skeletonDamage = ringCount * ringDamage * skeletonCount;
-     output("skelDamage", skeletonDamage);
+     let healthlost = 0;
 
-     let frDamage = forbiddenRite * (life * 0.4 + energyShield * 0.25) * (1 - (chaosRes / 100));
-     output("frDamage", frDamage);
+     const oneSkeletonDamage = ringCount * ringDamage;
+     const skeletonDamage = oneSkeletonDamage * skeletonCount;
+     output("skelDamage", skeletonDamage);
+     output("skelDamage2", skeletonCount);
+     if (oneSkeletonDamage > ward) {
+          healthlost += (oneSkeletonDamage - ward) * skeletonCount;
+          output("skelDamage3", oneSkeletonDamage, "yellow");
+     }
+     else {
+          output("skelDamage3", oneSkeletonDamage);
+     }
+
+     const frDamage = forbiddenRite * (life * 0.4 + energyShield * 0.25) * (1 - (chaosRes / 100));
+     if (frDamage > ward) {
+          healthlost += (frDamage - ward);
+          output("frDamage", frDamage, "yellow");
+     }
+     else {
+          output("frDamage", frDamage);
+     }
 
      let totalDamage = skeletonDamage + frDamage;
-     output("totalDamage", totalDamage);
 
      let threshold = CWDT_THRESHOLDS[CWDTLevel];
      let gemMulti = Math.floor(CWDTQuality / 2);
      threshold = threshold * (1 - gemMulti / 100);
 
-     // if(parseInt(SummonSkeletonLevel) > gLevel) {
-     //     gLevel = parseInt(SummonSkeletonLevel);
-     // }
-     // We will handle this case later, perhaps only the bot will support it
+     output("totalDamage2", threshold);
 
      if (totalDamage >= threshold) {
+          output("totalDamage", totalDamage);
           output("status", "LOOP WORKS", "lime");
      } else {
+          output("totalDamage", totalDamage, "red");
           output("status", "LOOP FAILS", "red");
      }
 
-     if (ward >= frDamage) {
-          output("wardfr", "YES", "lime");
+     if (healthlost > 500) {
+          output("healthlost", healthlost, "red");
+     }
+     else if (healthlost > 0) {
+          output("healthlost", healthlost, "yellow");
      } else {
-          output("wardfr", "NO", "yellow");
+          output("healthlost", "NONE", "lime");
      }
 }
 

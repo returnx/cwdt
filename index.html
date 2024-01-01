@@ -36,7 +36,7 @@
                 <input type="number" name="ringDamage" value="420" min="350" max="420">
                 <br />
 
-                <label for=" SummonSkeletonLevel">Skeleton Level(After +1/+2)</label>
+                <label for="SummonSkeletonLevel">Skeleton Level(After +1/+2)</label>
                 <input type="number" name="SummonSkeletonLevel" value="11" min="1" max="31">
                 <br />
 
@@ -56,6 +56,7 @@
                 <div>
                     <span>Skeleton Damage</span>
                     <span id="skelDamage">computing..</span>
+                    (<span id="skelDamage2"></span> x <span id="skelDamage3"></span>)
                 </div>
                 <div>
                     <span>Forbidden Rite Damage</span>
@@ -64,16 +65,16 @@
                 <div>
                     <span>Total Damage</span>
                     <span id="totalDamage">computing..</span>
+                    (<span id="totalDamage2"></span> required)
                 </div>
-                <br />
                 <br />
                 <div>
                     <span class="statusLabel">Loop Status</span>
                     <span id="status">computing..</span>
                 </div>
                 <div>
-                    <span class="wardfrlabel">Ward > FR damage</span>
-                    <span id="wardfr">computing..</span>
+                    <span>Health lost per loop</span>
+                    <span id="healthlost">computing..</span>
                 </div>
             </form>
         </div>
@@ -113,7 +114,7 @@
 
                 <label for="olused">Olroth's Charges Consumed</label>
                 <input type="number" id="olused" name="olused" value="58" min="56" max="60">
-                <br /><br /><br /><br /><br /><br /><br /><br /><br />
+                <br /><br /><br /><br /><br /><br /><br />
 
                 <div>
                     <span class="statusLabel">Flask Status</span>
@@ -129,16 +130,14 @@
     </div>
 
     <div class="info">
-        <b>Forbidden Rite: Ward, Life, and Chaos Resistance</b>
+        <b>Health Lost per loop</b>
         <br />
         <br />
-        If your Forbidden Rite damage is greater than your Ward, then don't use Mind Over Matter, because Forbidden
-        Rite damage will remove your mana and also you cannot run less recovery map mods. It does not break the
-        build, but you have to be careful.
+        If any part of your self damage is greater than your Ward, then don't use Mind Over Matter or you'll run out of
+        mana. You cannot run less recovery map mods. It does not break the build, but you have to be careful.
         <br />
         <br />
-        If you have more life, you need to adjust chaos resistance to avoid FR damage to life pool.
-        This applies only if you are using Forbidden Rite trigger setup.
+        You can adjust the damage taken from Forbidden Rite by adjusting your chaos resistance or your life.
         <br />
         <br />
         <b>Cast when Damage Taken gem levels and quality</b>
