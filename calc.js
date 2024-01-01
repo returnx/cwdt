@@ -141,7 +141,7 @@ function checkLoop() {
 // Calculates flask uptime
 function checkFlask() {
      const {
-          ascCharges,    // checking if scion/pathfinder
+          ascCharges,    // charges every 3 second from scion/pathfinder
           flaskCount,    // 2-3-4
           charms,        // charm count
           charges,       // total charges gained
@@ -151,38 +151,54 @@ function checkFlask() {
           olused,        // olroths's charges used 
      } = readFormElements("flaskForm");
 
-     var flaskMultiplier = 5 - flaskCount; // balbala multiplier, this calculator assumes balbala
-     var chargesConsumed = olused * (1 - (reduced/100));
+     // How many charges do we get?
+     const chargeMultiplier = (1 + charges / 100);
+     const flaskChargesEvery5Seconds = (4 * (5 - flaskCount)) * chargeMultiplier; // From The Traiter, from Balbala timeless jewel
+     const flaskChargesEvery3Seconds = (ascCharges + charms) * chargeMultiplier;
 
-     var currentCharges = 60 - chargesConsumed; // Olroth's flask has 60 charges, so we start
+     // How many charges do we spend?
+     const flaskChargesConsumed = olused * (1 - reduced / 100);
+     const flaskDuration = olduration * (1 + duration / 100);
 
-     var totalDuration = parseInt((olduration * (1 + (duration / 100))) * 1000);
+     // We check if flask will sustain for 10 minutes.
+     // The time here is in server ticks (30 ticks per second)
+     // We ignore Pathfinder's chance to not consume flask charges: it's random and cannot be relied on
+     const flaskDuration_ticks = Math.floor(flaskDuration * 30);
+     let currentCharges = 60 - flaskChargesConsumed; // Olroth's flask has 60 charges, so we start
+     let flasks_ok = true;
 
-     output("fstatus", "FLASKS WORK!", "lime"); // We assume flask work
-     // We check if flask will sustain for 10 minutes. The time here is in milliseconds
-
-     for(var i = 1; i < 10 * 60 * 1000; i++) {
-
-          if(i % 3000 === 0) {
-               currentCharges = currentCharges + ((ascCharges * 3 + charms) * (1 + (charges/100)));
+     for (let i = 1; i < 10 * 60 * 30; i++) {
+          if (i % (3 * 30) === 0) {
+               currentCharges = currentCharges + flaskChargesEvery3Seconds;
           }
 
-          if(i % 5000 === 0) {
-               currentCharges = currentCharges + ((4 * flaskMultiplier) * (1 + (charges/100)));
+          if (i % (5 * 30) === 0) {
+               currentCharges = currentCharges + flaskChargesEvery5Seconds;
           }
 
-          if(i % totalDuration === 0) {
-               if(currentCharges >= chargesConsumed) {
-                    currentCharges = currentCharges - chargesConsumed;
+          // Charges can never overflow the flask
+          currentCharges = Math.min(60, currentCharges);
+
+          if (i % flaskDuration_ticks === 0) {
+               if (currentCharges >= flaskChargesConsumed) {
+                    currentCharges = currentCharges - flaskChargesConsumed;
                } else {
-                    output("fstatus", "FLASKS FAIL", "red");
+                    flasks_ok = false;
                     break;
                }
           }
-
+     }
+     if (flasks_ok) {
+          output("fstatus", "FLASKS WORK!", "lime");
+     }
+     else {
+          output("fstatus", "FLASKS FAIL", "red");
      }
 
      // (((8/5)+(1/3)+(3/3))*(1+(R1/100))+0.075) / (R5*(1-R3/100)/(R4*(1+(R2/100))))
-     var fCoefficient = (((4 * flaskMultiplier / 5) + ascCharges + charms / 3) * (1 + (charges / 100)) + 0.075) / (olused * (1 - reduced / 100) / (olduration * (1 + (duration / 100))));
+     // Where is this +0.075 from?
+     const flaskChargesPerSecond = (flaskChargesEvery5Seconds / 5) + (flaskChargesEvery3Seconds / 3);
+     const flaskChargesUsedPerSecond = flaskChargesConsumed / flaskDuration;
+     const fCoefficient = (flaskChargesPerSecond + 0.075) / flaskChargesUsedPerSecond;
      output("fCoefficient", fCoefficient);
 }
