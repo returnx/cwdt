@@ -91,8 +91,7 @@ function checkLoop() {
      if (oneSkeletonDamage > ward) {
           healthlost += (oneSkeletonDamage - ward) * skeletonCount;
           output("skelDamage3", oneSkeletonDamage, "yellow");
-     }
-     else {
+     } else {
           output("skelDamage3", oneSkeletonDamage);
      }
 
@@ -100,16 +99,14 @@ function checkLoop() {
      if (frDamage > ward) {
           healthlost += (frDamage - ward);
           output("frDamage", frDamage, "yellow");
-     }
-     else {
+     } else {
           output("frDamage", frDamage);
      }
 
-     let totalDamage = skeletonDamage + frDamage;
+     const totalDamage = skeletonDamage + frDamage;
 
-     let threshold = CWDT_THRESHOLDS[CWDTLevel];
-     let gemMulti = Math.floor(CWDTQuality / 2);
-     threshold = threshold * (1 - gemMulti / 100);
+     const gemMulti = Math.floor(CWDTQuality / 2);
+     const threshold = CWDT_THRESHOLDS[CWDTLevel] * (1 - gemMulti / 100);
 
      output("totalDamage2", threshold);
 
@@ -123,11 +120,21 @@ function checkLoop() {
 
      if (healthlost > 500) {
           output("healthlost", healthlost, "red");
-     }
-     else if (healthlost > 0) {
+     } else if (healthlost > 0) {
           output("healthlost", healthlost, "yellow");
      } else {
           output("healthlost", "NONE", "lime");
+     }
+
+     const incDmgTaken_skel = ward / oneSkeletonDamage;
+     const incDmgTaken_fr = ward / frDamage;
+     const incDmgTaken = Math.min(incDmgTaken_skel, incDmgTaken_fr) - 1;
+     const incDmgTaken_percent = Math.floor(incDmgTaken * 100);
+     if (incDmgTaken >= 0) {
+          output("incDmgTaken", incDmgTaken_percent + "%");
+     }
+     else {
+          output("incDmgTaken", "none", "yellow");
      }
 }
 
