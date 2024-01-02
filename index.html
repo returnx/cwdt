@@ -36,7 +36,7 @@
                 <input type="number" name="ringDamage" value="420" min="350" max="420">
                 <br />
 
-                <label for=" SummonSkeletonLevel">Skeleton Level(After +1/+2)</label>
+                <label for="SummonSkeletonLevel">Skeleton Level(After +1/+2)</label>
                 <input type="number" name="SummonSkeletonLevel" value="11" min="1" max="31">
                 <br />
 
@@ -53,33 +53,40 @@
 
                 <br />
                 <br />
-                <text>Skeleton Damage</text>
-                <text id="skelDamage">computing..</text>
+                <div>
+                    <span>Skeleton Damage</span>
+                    <span id="skelDamage">computing..</span>
+                    (<span id="skelDamage2"></span> x <span id="skelDamage3"></span>)
+                </div>
+                <div>
+                    <span>Forbidden Rite Damage</span>
+                    <span id="frDamage">computing..</span>
+                </div>
+                <div>
+                    <span>Total Damage</span>
+                    <span id="totalDamage">computing..</span>
+                    (<span id="totalDamage2"></span> required)
+                </div>
                 <br />
-                <text>Forbidden Rite Damage</text>
-                <text id="frDamage">computing..</text>
-                <br />
-
-                <text>Total Damage</text>
-                <text id="totalDamage">computing..</text>
-                <br />
-                <br />
-                <text class="statusLabel">Loop Status</text>
-                <text id="status">computing..</text>
-
-                <br />
-                <br />
-                <text class="wardfrlabel">Ward > FR damage</text>
-                <text id="wardfr">computing..</text>
-                <br />
-                <br />
+                <div>
+                    <span class="statusLabel">Loop Status</span>
+                    <span id="status">computing..</span>
+                </div>
+                <div>
+                    <span>Health lost per loop</span>
+                    <span id="healthlost">computing..</span>
+                </div>
+                <div>
+                    <span>Safe %inc dmg taken</span>
+                    <span id="incDmgTaken">computing..</span>
+                </div>
             </form>
         </div>
         <div class="calcbox">
             <h2>Flask Calculator</h2>
             <form id="flaskForm">
                 <label for="ascCharges">Ascendancy</label>
-                <input type="radio" name="ascCharges" value="1" checked="checked">Scion/PF</input>
+                <input type="radio" name="ascCharges" value="3" checked="checked">Scion/PF</input>
                 <input type="radio" name="ascCharges" value="0">Others</input>
                 <br />
 
@@ -87,53 +94,63 @@
                 <input type="radio" name="flaskCount" value="2">2</input>
                 <input type="radio" name="flaskCount" value="3" checked="checked">3</input>
                 <input type="radio" name="flaskCount" value="4">4</input>
+                <input type="radio" name="flaskCount" value="5">5</input>
                 <br />
 
                 <label for="Pathfinder Charms">Pathfinder Charms</label>
-                <input type="number" id="charms" name="charms" value="0" min="0" max="3">
+                <input type="number" name="charms" value="0" min="0">
                 <br />
 
                 <label for="charges">Flask Charges Gained</label>
-                <input type="number" id="charges" name="charges" value="75" min="0">
+                <input type="number" name="charges" value="75" min="0">
                 <br />
 
                 <label for="duration">Flask Duration</label>
-                <input type="number" id="duration" name="duration" value="56" min="0">
+                <input type="number" name="duration" value="56" min="0">
                 <br />
 
                 <label for="reduced">Reduced Flask Charges Used</label>
-                <input type="number" id="reduced" name="reduced" value="19" min="0" max="99">
+                <input type="number" name="reduced" value="19" min="0" max="99">
                 <br />
 
                 <label for="olduration">Olroth's Flask Duration</label>
-                <input type="number" id="olduration" name="olduration" value="6.0" step="0.1" min="5.0" max="6.4">
+                <input type="number" name="olduration" value="6.0" step="0.1" min="5.0" max="6.4">
                 <br />
 
                 <label for="olused">Olroth's Charges Consumed</label>
-                <input type="number" id="olused" name="olused" value="58" min="56" max="60">
-                <br /><br /><br /><br /><br /><br /><br /><br /><br />
+                <input type="number" name="olused" value="58" min="56" max="60">
+                <br /><br /><br /><br /><br /><br /><br />
 
-                <text class="statusLabel">Flask Status</text>
-                <text id="fstatus">computing..</text>
-                <br />
+                <div>
+                    <span class="statusLabel">Flask Status</span>
+                    <span id="fstatus">computing..</span>
+                </div>
+                <div>
+                    <span class="flaskCoeff">Flask Coefficient</span>
+                    <span id="fCoefficient">computing..</span>
+                </div>
 
-                <text class="flaskCoeff">Flask Coefficient</text>
-                <text id="fCoefficient">computing..</text>
             </form>
         </div>
     </div>
 
     <div class="info">
-        <b>Forbidden Rite: Ward, Life, and Chaos Resistance</b>
+        <b>Health Lost per loop</b>
         <br />
         <br />
-        If your Forbidden Rite damage is greater than your Ward, then don't use Mind Over Matter, because Forbidden
-        Rite damage will remove your mana and also you cannot run less recovery map mods. It does not break the
-        build, but you have to be careful.
+        If any part of your self damage is greater than your Ward, then don't use Mind Over Matter or you'll run out of
+        mana. You cannot run less recovery map mods. It does not break the build, but you have to be careful.
         <br />
         <br />
-        If you have more life, you need to adjust chaos resistance to avoid FR damage to life pool.
-        This applies only if you are using Forbidden Rite trigger setup.
+        You can adjust the damage taken from Forbidden Rite by adjusting your chaos resistance or your life.
+        <br />
+        <br />
+        <b>Safe %inc dmg taken</b>
+        <br />
+        <br />
+        This is the amount of <i>#% increased damage taken</i> modifiers you can suffer without losing health from your
+        self damage. If this number is low (or monsters keep killing you), mitigate Shocks and Curses as explained in
+        the guide.
         <br />
         <br />
         <b>Cast when Damage Taken gem levels and quality</b>
@@ -150,7 +167,7 @@
         <b>About Flasks</b>
         <br />
         <br />
-        Try to get flask coefficent above 1.03. Anything above 1.0 should theoritically work, but does not
+        Try to get flask coefficent above 1.03. Anything above 1.0 should theoretically work, but does not
         sometimes!
         <br>
         You can find your flasks stats in your character sheet. Press C and go to Misc Tab.

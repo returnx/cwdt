@@ -21,7 +21,7 @@ input {
     font-size: 20px;
 }
 
-div.calcbox text {
+div.calcbox span:first-child {
     display: inline-block;
     width: 300px;
 }
