@@ -160,50 +160,20 @@ function checkFlask() {
      const flaskChargesConsumed = olused * (1 - reduced / 100);
      const flaskDuration = olduration * (1 + duration / 100);
      const flaskDuration_ticks = Math.floor(flaskDuration * 30);
+     const flaskMaxCharges = 60;
 
-     // We check if flask will sustain for 10 minutes.
-     // The time here is in server ticks (30 ticks per second)
-     const total_ticks = 10 * 60 * 30;
-
-     // current status of the flask
-     let currentCharges = 60;
-     let flaskExpiresOnTick = 0;
-     // Start the loop
-     let tick = 0;
-     while (tick < total_ticks) {
-          // Add flask charges
-          if (tick % (3 * 30) === 0) {
-               currentCharges = currentCharges + flaskChargesEvery3Seconds;
-          }
-          if (tick % (5 * 30) === 0) {
-               currentCharges = currentCharges + flaskChargesEvery5Seconds;
-          }
-          // Charges can never overflow the flask
-          currentCharges = Math.min(60, currentCharges);
-
-          // See if the flask needs to be activated
-          if (tick >= flaskExpiresOnTick) {
-               if (currentCharges >= flaskChargesConsumed) {
-                    // We ignore Pathfinder's chance to not consume flask charges: it is random and cannot be relied on
-                    currentCharges = currentCharges - flaskChargesConsumed;
-                    flaskExpiresOnTick = tick + flaskDuration_ticks;
-               } else {
-                    break;
-               }
-          }
-
-          // As a performance optimization, skip ahead to the next tick where something interesting happens
-          const next_3s_tick = Math.ceil((tick + 1) / (3 * 30)) * (3 * 30);
-          const next_5s_tick = Math.ceil((tick + 1) / (5 * 30)) * (5 * 30);
-          let next_tick = Math.min(total_ticks, next_3s_tick, next_5s_tick, flaskExpiresOnTick);
-          // Skip ahead
-          tick = next_tick;
-     }
-     if (tick === total_ticks) {
+     let result = simulateFlask({
+          flaskChargesEvery3Seconds,
+          flaskChargesEvery5Seconds,
+          flaskMaxCharges,
+          flaskChargesConsumed,
+          flaskDuration_ticks
+     });
+     if (result === true) {
           output("fstatus", "FLASKS WORK!", "lime");
      }
      else {
-          const seconds = tick / 30;
+          const seconds = result / 30;
           output("fstatus", "Fails after " + seconds.toFixed(1) + "s", "red");
      }
 
@@ -212,4 +182,56 @@ function checkFlask() {
      const uptime = flaskChargesPerSecond / flaskChargesUsedPerSecond;
      const uptime_percent = Math.floor(uptime * 100 * 100) / 100;
      output("fuptime", uptime_percent.toFixed(2) + "%");
+}
+
+
+function simulateFlask({
+     flaskChargesEvery3Seconds,
+     flaskChargesEvery5Seconds,
+     flaskMaxCharges,
+     flaskChargesConsumed,
+     flaskDuration_ticks
+}) {
+     // We check if flask will sustain for 10 minutes.
+     // The time here is in server ticks (30 ticks per second)
+     const total_ticks = 10 * 60 * 30;
+     const three_seconds = 3 * 30;
+     const five_seconds = 5 * 30;
+
+     // current status of the flask
+     let currentCharges = flaskMaxCharges;
+     let flaskExpiresOnTick = 0;
+     // Start the loop
+     let tick = 0;
+     while (tick < total_ticks) {
+          // Add flask charges
+          if (tick % three_seconds === 0) {
+               currentCharges = currentCharges + flaskChargesEvery3Seconds;
+          }
+          if (tick % (5 * 30) === 0) {
+               currentCharges = currentCharges + flaskChargesEvery5Seconds;
+          }
+          // Charges can never overflow the flask
+          currentCharges = Math.min(flaskMaxCharges, currentCharges);
+
+          // See if the flask needs to be activated
+          if (tick >= flaskExpiresOnTick) {
+               if (currentCharges >= flaskChargesConsumed) {
+                    // We ignore Pathfinder's chance to not consume flask charges: it is random and cannot be relied on
+                    currentCharges = currentCharges - flaskChargesConsumed;
+                    flaskExpiresOnTick = tick + flaskDuration_ticks;
+               } else {
+                    return tick;
+               }
+          }
+
+          // As a performance optimization, skip ahead to the next tick where something interesting happens
+          const next_3s_tick = Math.ceil((tick + 1) / three_seconds) * three_seconds;
+          const next_5s_tick = Math.ceil((tick + 1) / five_seconds) * five_seconds;
+          let next_tick = Math.min(total_ticks, next_3s_tick, next_5s_tick, flaskExpiresOnTick);
+          // Skip ahead
+          tick = next_tick;
+     }
+
+     return true;
 }
