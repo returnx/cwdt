@@ -159,46 +159,57 @@ function checkFlask() {
      // How many charges do we spend?
      const flaskChargesConsumed = olused * (1 - reduced / 100);
      const flaskDuration = olduration * (1 + duration / 100);
+     const flaskDuration_ticks = Math.floor(flaskDuration * 30);
 
      // We check if flask will sustain for 10 minutes.
      // The time here is in server ticks (30 ticks per second)
-     // We ignore Pathfinder's chance to not consume flask charges: it's random and cannot be relied on
-     const flaskDuration_ticks = Math.floor(flaskDuration * 30);
-     let currentCharges = 60 - flaskChargesConsumed; // Olroth's flask has 60 charges, so we start
-     let flasks_ok = true;
+     const total_ticks = 10 * 60 * 30;
 
-     for (let i = 1; i < 10 * 60 * 30; i++) {
-          if (i % (3 * 30) === 0) {
+     // current status of the flask
+     let currentCharges = 60;
+     let flaskExpiresOnTick = 0;
+     // Start the loop
+     let tick = 0;
+     while (tick < total_ticks) {
+          // Add flask charges
+          if (tick % (3 * 30) === 0) {
                currentCharges = currentCharges + flaskChargesEvery3Seconds;
           }
-
-          if (i % (5 * 30) === 0) {
+          if (tick % (5 * 30) === 0) {
                currentCharges = currentCharges + flaskChargesEvery5Seconds;
           }
-
           // Charges can never overflow the flask
           currentCharges = Math.min(60, currentCharges);
 
-          if (i % flaskDuration_ticks === 0) {
+          // See if the flask needs to be activated
+          if (tick >= flaskExpiresOnTick) {
                if (currentCharges >= flaskChargesConsumed) {
+                    // We ignore Pathfinder's chance to not consume flask charges: it is random and cannot be relied on
                     currentCharges = currentCharges - flaskChargesConsumed;
+                    flaskExpiresOnTick = tick + flaskDuration_ticks;
                } else {
-                    flasks_ok = false;
                     break;
                }
           }
+
+          // As a performance optimization, skip ahead to the next tick where something interesting happens
+          const next_3s_tick = Math.ceil((tick + 1) / (3 * 30)) * (3 * 30);
+          const next_5s_tick = Math.ceil((tick + 1) / (5 * 30)) * (5 * 30);
+          let next_tick = Math.min(total_ticks, next_3s_tick, next_5s_tick, flaskExpiresOnTick);
+          // Skip ahead
+          tick = next_tick;
      }
-     if (flasks_ok) {
+     if (tick === total_ticks) {
           output("fstatus", "FLASKS WORK!", "lime");
      }
      else {
-          output("fstatus", "FLASKS FAIL", "red");
+          const seconds = tick / 30;
+          output("fstatus", "Fails after " + seconds.toFixed(1) + "s", "red");
      }
 
-     // (((8/5)+(1/3)+(3/3))*(1+(R1/100))+0.075) / (R5*(1-R3/100)/(R4*(1+(R2/100))))
-     // Where is this +0.075 from?
      const flaskChargesPerSecond = (flaskChargesEvery5Seconds / 5) + (flaskChargesEvery3Seconds / 3);
      const flaskChargesUsedPerSecond = flaskChargesConsumed / flaskDuration;
-     const fCoefficient = (flaskChargesPerSecond + 0.075) / flaskChargesUsedPerSecond;
-     output("fCoefficient", fCoefficient);
+     const uptime = flaskChargesPerSecond / flaskChargesUsedPerSecond;
+     const uptime_percent = Math.floor(uptime * 100 * 100) / 100;
+     output("fuptime", uptime_percent.toFixed(2) + "%");
 }
