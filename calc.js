@@ -149,6 +149,7 @@ function checkFlask() {
           reduced,       // reduced flask charges used modifier
           olduration,    // olroth's duration
           olused,        // olroths's charges used 
+          olmaxcharges,  // olroth's max charges
      } = readFormElements("flaskForm");
 
      // How many charges do we get?
@@ -160,7 +161,7 @@ function checkFlask() {
      const flaskChargesConsumed = olused * (1 - reduced / 100);
      const flaskDuration = olduration * (1 + duration / 100);
      const flaskDuration_ticks = Math.floor(flaskDuration * 30);
-     const flaskMaxCharges = 60;
+     const flaskMaxCharges = olmaxcharges;
 
      let result = simulateFlask({
           flaskChargesEvery3Seconds,
