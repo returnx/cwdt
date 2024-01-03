@@ -50,8 +50,8 @@
 
                 <label for="ward">Ward With Flask On</label>
                 <input type="number" name="ward" value="1100" min="0">
-
                 <br />
+
                 <br />
                 <div>
                     <span>Skeleton Damage</span>
@@ -123,18 +123,19 @@
 
                 <label for="olmaxcharges">Olroth's Max Charges</label>
                 <input type="number" name="olmaxcharges" value="60" min="15">
-                <br /><br /><br /><br />
+                <br />
 
+                <label for="flaskenchant">Enchantment</label>
+                <select name="flaskenchant" value="end">
+                    <option value="0">Reuse at end of effect</option>
+                    <option value="1">Use when charges full</option>
+                </select>
+                <br />
+
+                <br />
                 <div>
-                    Flask Status based on enchantment:
-                </div>
-                <div>
-                    <span class="statusLabel">Reused at end</span>
-                    <span id="fstatus_reused">computing..</span>
-                </div>
-                <div>
-                    <span class="statusLabel">Used when full</span>
-                    <span id="fstatus_full">computing..</span>
+                    <span class="statusLabel">Flask Status</span>
+                    <span id="fstatus">computing..</span>
                 </div>
                 <div>
                     <span class="flaskCoeff">Flask Uptime (approx)</span>
