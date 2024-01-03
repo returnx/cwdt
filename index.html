@@ -114,20 +114,31 @@
                 <br />
 
                 <label for="olduration">Olroth's Flask Duration</label>
-                <input type="number" name="olduration" value="6.0" step="0.1" min="5.0" max="6.4">
+                <input type="number" name="olduration" value="6.0" step="0.1" min="0.1">
                 <br />
 
                 <label for="olused">Olroth's Charges Consumed</label>
-                <input type="number" name="olused" value="58" min="56" max="60">
-                <br /><br /><br /><br /><br /><br /><br />
+                <input type="number" name="olused" value="58" min="1">
+                <br />
+
+                <label for="olmaxcharges">Olroth's Max Charges</label>
+                <input type="number" name="olmaxcharges" value="60" min="15">
+                <br /><br /><br /><br />
 
                 <div>
-                    <span class="statusLabel">Flask Status</span>
-                    <span id="fstatus">computing..</span>
+                    Flask Status based on enchantment:
                 </div>
                 <div>
-                    <span class="flaskCoeff">Flask Coefficient</span>
-                    <span id="fCoefficient">computing..</span>
+                    <span class="statusLabel">Reused at end</span>
+                    <span id="fstatus_reused">computing..</span>
+                </div>
+                <div>
+                    <span class="statusLabel">Used when full</span>
+                    <span id="fstatus_full">computing..</span>
+                </div>
+                <div>
+                    <span class="flaskCoeff">Flask Uptime (approx)</span>
+                    <span id="fuptime">computing..</span>
                 </div>
 
             </form>
@@ -167,10 +178,16 @@
         <b>About Flasks</b>
         <br />
         <br />
-        Try to get flask coefficent above 1.03. Anything above 1.0 should theoretically work, but does not
-        sometimes!
-        <br>
-        You can find your flasks stats in your character sheet. Press C and go to Misc Tab.
+        The flask status is based on a simulation. We do not know the exact internal rounding used by PoE for flask
+        duration and flask charges, but otherwise the simulation should be accurate.
+        <br />
+        <br />
+        The flask uptime is an approximation, comparing average flask charges gained with flask charges spent. Numbers
+        above 100% are possible.
+        <br />
+        <br />
+        You can find your flasks stats in your character sheet. Press C and go to Misc Tab. Even though the form says
+        Olroth's, the formulas work for other flasks as well.
     </div>
 
 </body>

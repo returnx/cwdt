@@ -149,6 +149,7 @@ function checkFlask() {
           reduced,       // reduced flask charges used modifier
           olduration,    // olroth's duration
           olused,        // olroths's charges used 
+          olmaxcharges,  // olroth's max charges
      } = readFormElements("flaskForm");
 
      // How many charges do we get?
@@ -159,46 +160,110 @@ function checkFlask() {
      // How many charges do we spend?
      const flaskChargesConsumed = olused * (1 - reduced / 100);
      const flaskDuration = olduration * (1 + duration / 100);
-
-     // We check if flask will sustain for 10 minutes.
-     // The time here is in server ticks (30 ticks per second)
-     // We ignore Pathfinder's chance to not consume flask charges: it's random and cannot be relied on
      const flaskDuration_ticks = Math.floor(flaskDuration * 30);
-     let currentCharges = 60 - flaskChargesConsumed; // Olroth's flask has 60 charges, so we start
-     let flasks_ok = true;
+     const flaskMaxCharges = olmaxcharges;
 
-     for (let i = 1; i < 10 * 60 * 30; i++) {
-          if (i % (3 * 30) === 0) {
-               currentCharges = currentCharges + flaskChargesEvery3Seconds;
-          }
+     const result_reused = simulateFlask({
+          flaskChargesEvery3Seconds,
+          flaskChargesEvery5Seconds,
+          flaskMaxCharges,
+          flaskChargesConsumed,
+          flaskDuration_ticks
+     }, false);
+     outputFlaskStatus("fstatus_reused", result_reused);
 
-          if (i % (5 * 30) === 0) {
-               currentCharges = currentCharges + flaskChargesEvery5Seconds;
-          }
+     const result_full = simulateFlask({
+          flaskChargesEvery3Seconds,
+          flaskChargesEvery5Seconds,
+          flaskMaxCharges,
+          flaskChargesConsumed,
+          flaskDuration_ticks
+     }, true);
+     outputFlaskStatus("fstatus_full", result_full);
 
-          // Charges can never overflow the flask
-          currentCharges = Math.min(60, currentCharges);
-
-          if (i % flaskDuration_ticks === 0) {
-               if (currentCharges >= flaskChargesConsumed) {
-                    currentCharges = currentCharges - flaskChargesConsumed;
-               } else {
-                    flasks_ok = false;
-                    break;
-               }
-          }
-     }
-     if (flasks_ok) {
-          output("fstatus", "FLASKS WORK!", "lime");
-     }
-     else {
-          output("fstatus", "FLASKS FAIL", "red");
-     }
-
-     // (((8/5)+(1/3)+(3/3))*(1+(R1/100))+0.075) / (R5*(1-R3/100)/(R4*(1+(R2/100))))
-     // Where is this +0.075 from?
      const flaskChargesPerSecond = (flaskChargesEvery5Seconds / 5) + (flaskChargesEvery3Seconds / 3);
      const flaskChargesUsedPerSecond = flaskChargesConsumed / flaskDuration;
-     const fCoefficient = (flaskChargesPerSecond + 0.075) / flaskChargesUsedPerSecond;
-     output("fCoefficient", fCoefficient);
+     const uptime = flaskChargesPerSecond / flaskChargesUsedPerSecond;
+     const uptime_percent = Math.floor(uptime * 100 * 100) / 100;
+     output("fuptime", uptime_percent.toFixed(2) + "%");
+}
+
+
+function simulateFlask({
+     flaskChargesEvery3Seconds,
+     flaskChargesEvery5Seconds,
+     flaskMaxCharges,
+     flaskChargesConsumed,
+     flaskDuration_ticks
+}, use_when_full) {
+     // We simulate the flask usage over a period of time
+     // The time here is in server ticks (30 ticks per second)
+     const three_seconds = 3 * 30;
+     const five_seconds = 5 * 30;
+
+     if (flaskChargesConsumed > flaskMaxCharges) {
+          // Flask cannot be used; fails after 0 ticks
+          return 0;
+     }
+
+     // current status of the flask
+     let currentCharges = flaskMaxCharges;
+     let flaskExpiresOnTick = 0;
+     // Start the loop
+     let tick = 0;
+     for (; ;) {
+          // Add flask charges
+          if (tick % three_seconds === 0) {
+               currentCharges = currentCharges + flaskChargesEvery3Seconds;
+          }
+          if (tick % (5 * 30) === 0) {
+               currentCharges = currentCharges + flaskChargesEvery5Seconds;
+          }
+          // Charges can never overflow the flask
+          currentCharges = Math.min(flaskMaxCharges, currentCharges);
+
+          // If we get back to full charges at any multiple of 15 seconds, we have a stable loop
+          if (tick > 0 && tick % (3 * 5 * 30) === 0 && currentCharges === flaskMaxCharges) {
+               return "works";
+          }
+
+          if (use_when_full && currentCharges === flaskMaxCharges) {
+               currentCharges = currentCharges - flaskChargesConsumed;
+               flaskExpiresOnTick = tick + flaskDuration_ticks;
+          }
+
+          // See if the flask expired
+          if (tick >= flaskExpiresOnTick) {
+               if (!use_when_full && currentCharges >= flaskChargesConsumed) {
+                    // We ignore Pathfinder's chance to not consume flask charges: it is random and cannot be relied on
+                    currentCharges = currentCharges - flaskChargesConsumed;
+                    flaskExpiresOnTick = tick + flaskDuration_ticks;
+               } else {
+                    return tick;
+               }
+          }
+
+          // As a performance optimization, skip ahead to the next tick where something interesting happens
+          const next_3s_tick = Math.ceil((tick + 1) / three_seconds) * three_seconds;
+          const next_5s_tick = Math.ceil((tick + 1) / five_seconds) * five_seconds;
+          let next_tick = Math.min(next_3s_tick, next_5s_tick, flaskExpiresOnTick);
+          // Skip ahead
+          tick = next_tick;
+
+          // To prevent infinite loops, bail out after 30 minutes
+          if (tick >= 30 * 60 * 30) {
+               return "30min";
+          }
+     }
+}
+
+function outputFlaskStatus(output_id, result) {
+     if (result === "works") {
+          output(output_id, "FLASK WORKS!", "lime");
+     } else if (result === "30min") {
+          output(output_id, "Stable for at least 30 min", "yellow");
+     } else {
+          const seconds = result / 30;
+          output(output_id, "Fails after " + seconds.toFixed(1) + "s", "red");
+     }
 }
