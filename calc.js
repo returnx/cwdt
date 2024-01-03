@@ -196,18 +196,22 @@ function simulateFlask({
      flaskChargesConsumed,
      flaskDuration_ticks
 }, use_when_full) {
-     // We check if flask will sustain for 10 minutes.
+     // We simulate the flask usage over a period of time
      // The time here is in server ticks (30 ticks per second)
-     const total_ticks = 10 * 60 * 30;
      const three_seconds = 3 * 30;
      const five_seconds = 5 * 30;
+
+     if (flaskChargesConsumed > flaskMaxCharges) {
+          // Flask cannot be used; fails after 0 ticks
+          return 0;
+     }
 
      // current status of the flask
      let currentCharges = flaskMaxCharges;
      let flaskExpiresOnTick = 0;
      // Start the loop
      let tick = 0;
-     while (tick < total_ticks) {
+     for (; ;) {
           // Add flask charges
           if (tick % three_seconds === 0) {
                currentCharges = currentCharges + flaskChargesEvery3Seconds;
@@ -217,6 +221,11 @@ function simulateFlask({
           }
           // Charges can never overflow the flask
           currentCharges = Math.min(flaskMaxCharges, currentCharges);
+
+          // If we get back to full charges at any multiple of 15 seconds, we have a stable loop
+          if (tick > 0 && tick % (3 * 5 * 30) === 0 && currentCharges === flaskMaxCharges) {
+               return "works";
+          }
 
           if (use_when_full && currentCharges === flaskMaxCharges) {
                currentCharges = currentCharges - flaskChargesConsumed;
@@ -237,16 +246,22 @@ function simulateFlask({
           // As a performance optimization, skip ahead to the next tick where something interesting happens
           const next_3s_tick = Math.ceil((tick + 1) / three_seconds) * three_seconds;
           const next_5s_tick = Math.ceil((tick + 1) / five_seconds) * five_seconds;
-          let next_tick = Math.min(total_ticks, next_3s_tick, next_5s_tick, flaskExpiresOnTick);
+          let next_tick = Math.min(next_3s_tick, next_5s_tick, flaskExpiresOnTick);
           // Skip ahead
           tick = next_tick;
+
+          // To prevent infinite loops, bail out after 30 minutes
+          if (tick >= 30 * 60 * 30) {
+               return "30min";
+          }
      }
-     return true;
 }
 
 function outputFlaskStatus(output_id, result) {
-     if (result === true) {
+     if (result === "works") {
           output(output_id, "FLASK WORKS!", "lime");
+     } else if (result === "30min") {
+          output(output_id, "Stable for at least 30 min", "yellow");
      } else {
           const seconds = result / 30;
           output(output_id, "Fails after " + seconds.toFixed(1) + "s", "red");
