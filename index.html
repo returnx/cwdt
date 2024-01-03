@@ -123,11 +123,18 @@
 
                 <label for="olmaxcharges">Olroth's Max Charges</label>
                 <input type="number" name="olmaxcharges" value="60" min="15">
-                <br /><br /><br /><br /><br /><br /><br />
+                <br /><br /><br /><br />
 
                 <div>
-                    <span class="statusLabel">Flask Status</span>
-                    <span id="fstatus">computing..</span>
+                    Flask Status based on enchantment:
+                </div>
+                <div>
+                    <span class="statusLabel">Reused at end</span>
+                    <span id="fstatus_reused">computing..</span>
+                </div>
+                <div>
+                    <span class="statusLabel">Used when full</span>
+                    <span id="fstatus_full">computing..</span>
                 </div>
                 <div>
                     <span class="flaskCoeff">Flask Uptime (approx)</span>
@@ -175,7 +182,8 @@
         duration and flask charges, but otherwise the simulation should be accurate.
         <br />
         <br />
-        The flask uptime is an approximation, where numbers above 100% are possible.
+        The flask uptime is an approximation, comparing average flask charges gained with flask charges spent. Numbers
+        above 100% are possible.
         <br />
         <br />
         You can find your flasks stats in your character sheet. Press C and go to Misc Tab. Even though the form says

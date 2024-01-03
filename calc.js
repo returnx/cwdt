@@ -163,20 +163,23 @@ function checkFlask() {
      const flaskDuration_ticks = Math.floor(flaskDuration * 30);
      const flaskMaxCharges = olmaxcharges;
 
-     let result = simulateFlask({
+     const result_reused = simulateFlask({
           flaskChargesEvery3Seconds,
           flaskChargesEvery5Seconds,
           flaskMaxCharges,
           flaskChargesConsumed,
           flaskDuration_ticks
-     });
-     if (result === true) {
-          output("fstatus", "FLASKS WORK!", "lime");
-     }
-     else {
-          const seconds = result / 30;
-          output("fstatus", "Fails after " + seconds.toFixed(1) + "s", "red");
-     }
+     }, false);
+     outputFlaskStatus("fstatus_reused", result_reused);
+
+     const result_full = simulateFlask({
+          flaskChargesEvery3Seconds,
+          flaskChargesEvery5Seconds,
+          flaskMaxCharges,
+          flaskChargesConsumed,
+          flaskDuration_ticks
+     }, true);
+     outputFlaskStatus("fstatus_full", result_full);
 
      const flaskChargesPerSecond = (flaskChargesEvery5Seconds / 5) + (flaskChargesEvery3Seconds / 3);
      const flaskChargesUsedPerSecond = flaskChargesConsumed / flaskDuration;
@@ -192,7 +195,7 @@ function simulateFlask({
      flaskMaxCharges,
      flaskChargesConsumed,
      flaskDuration_ticks
-}) {
+}, use_when_full) {
      // We check if flask will sustain for 10 minutes.
      // The time here is in server ticks (30 ticks per second)
      const total_ticks = 10 * 60 * 30;
@@ -215,9 +218,14 @@ function simulateFlask({
           // Charges can never overflow the flask
           currentCharges = Math.min(flaskMaxCharges, currentCharges);
 
-          // See if the flask needs to be activated
+          if (use_when_full && currentCharges === flaskMaxCharges) {
+               currentCharges = currentCharges - flaskChargesConsumed;
+               flaskExpiresOnTick = tick + flaskDuration_ticks;
+          }
+
+          // See if the flask expired
           if (tick >= flaskExpiresOnTick) {
-               if (currentCharges >= flaskChargesConsumed) {
+               if (!use_when_full && currentCharges >= flaskChargesConsumed) {
                     // We ignore Pathfinder's chance to not consume flask charges: it is random and cannot be relied on
                     currentCharges = currentCharges - flaskChargesConsumed;
                     flaskExpiresOnTick = tick + flaskDuration_ticks;
@@ -233,6 +241,14 @@ function simulateFlask({
           // Skip ahead
           tick = next_tick;
      }
-
      return true;
+}
+
+function outputFlaskStatus(output_id, result) {
+     if (result === true) {
+          output(output_id, "FLASK WORKS!", "lime");
+     } else {
+          const seconds = result / 30;
+          output(output_id, "Fails after " + seconds.toFixed(1) + "s", "red");
+     }
 }
