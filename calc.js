@@ -16,6 +16,9 @@ function init() {
           e.addEventListener("change", checkEverything);
           e.addEventListener("input", checkEverything);
      }
+     for (const e of document.getElementsByTagName("select")) {
+          e.addEventListener("change", checkEverything);
+     }
      checkEverything();
 }
 if (document.readyState === "loading") {
@@ -29,12 +32,18 @@ function readFormElements(formid) {
      const values = {};
      const form = document.getElementById(formid);
      for (const input of form.elements) {
-          if (!(input instanceof HTMLInputElement)) continue;
-          if (input.type === "radio" && !input.checked) continue;
           const name = input.name;
           if (!name) continue;
-          const value = Number(input.value);
-          values[name] = value;
+
+          if (input instanceof HTMLInputElement) {
+               if (input.type === "radio" && !input.checked) continue;
+               const value = Number(input.value);
+               values[name] = value;
+          }
+          else if (input instanceof HTMLSelectElement) {
+               const value = Number(input.value);
+               values[name] = value;
+          }
      }
      return values;
 }
@@ -150,6 +159,7 @@ function checkFlask() {
           olduration,    // olroth's duration
           olused,        // olroths's charges used 
           olmaxcharges,  // olroth's max charges
+          flaskenchant,  // 0: reuse, 1: when full
      } = readFormElements("flaskForm");
 
      // How many charges do we get?
@@ -163,23 +173,21 @@ function checkFlask() {
      const flaskDuration_ticks = Math.floor(flaskDuration * 30);
      const flaskMaxCharges = olmaxcharges;
 
-     const result_reused = simulateFlask({
+     const result = simulateFlask({
           flaskChargesEvery3Seconds,
           flaskChargesEvery5Seconds,
           flaskMaxCharges,
           flaskChargesConsumed,
           flaskDuration_ticks
-     }, false);
-     outputFlaskStatus("fstatus_reused", result_reused);
-
-     const result_full = simulateFlask({
-          flaskChargesEvery3Seconds,
-          flaskChargesEvery5Seconds,
-          flaskMaxCharges,
-          flaskChargesConsumed,
-          flaskDuration_ticks
-     }, true);
-     outputFlaskStatus("fstatus_full", result_full);
+     }, flaskenchant);
+     if (result === "works") {
+          output("fstatus", "FLASK WORKS!", "lime");
+     } else if (result === "30min") {
+          output("fstatus", "Stable for at least 30 min", "yellow");
+     } else {
+          const seconds = result / 30;
+          output("fstatus", "Fails after " + seconds.toFixed(1) + "s", "red");
+     }
 
      const flaskChargesPerSecond = (flaskChargesEvery5Seconds / 5) + (flaskChargesEvery3Seconds / 3);
      const flaskChargesUsedPerSecond = flaskChargesConsumed / flaskDuration;
@@ -254,16 +262,5 @@ function simulateFlask({
           if (tick >= 30 * 60 * 30) {
                return "30min";
           }
-     }
-}
-
-function outputFlaskStatus(output_id, result) {
-     if (result === "works") {
-          output(output_id, "FLASK WORKS!", "lime");
-     } else if (result === "30min") {
-          output(output_id, "Stable for at least 30 min", "yellow");
-     } else {
-          const seconds = result / 30;
-          output(output_id, "Fails after " + seconds.toFixed(1) + "s", "red");
      }
 }
