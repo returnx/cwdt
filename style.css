@@ -17,11 +17,17 @@ label {
     padding-bottom: 10px;
 }
 
-input {
+input,
+select {
     font-size: 20px;
 }
 
-div.calcbox text {
+input[type="number"],
+select {
+    width: 260px;
+}
+
+div.calcbox span:first-child {
     display: inline-block;
     width: 300px;
 }
